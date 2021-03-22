@@ -59,7 +59,7 @@
     "fmt": "yarn lint --fix",
     "postinstall": "husky install",
     "clean": "rm -rf dist",
-    "release": "standard-version",
+    "release": "HUSKY=0 standard-version",
     "prepublishOnly": "pinst --disable && tsc",
     "postpublish": "pinst --enable"
   },
