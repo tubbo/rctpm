@@ -1,8 +1,7 @@
 import path from "path";
 import { existsSync, readFileSync } from "fs";
-import { execSync } from "child_process";
 import { Package, PackageIterator } from "./types";
-import { PLUGIN_PATH } from "./config";
+import { RCTPM_CONFIG_PATH, RCTPM_PLUGIN_PATH } from "./config";
 import { logger } from "./logger";
 import { NotInitializedError, NotFoundError } from "./errors";
 import shell from "shelljs";
@@ -65,8 +64,13 @@ export class Manifest {
     this.build();
   }
 
+  init() {
+    shell.mkdir('-p', RCTPM_CONFIG_PATH);
+    this.exec("yarn init -yps");
+  }
+
   private build() {
-    shell.rm('-rf', PLUGIN_PATH)
+    shell.rm('-rf', RCTPM_PLUGIN_PATH)
 
     this.forEach((name: string) => {
       const installation = path.join(this.base, "node_modules", name)
@@ -76,7 +80,7 @@ export class Manifest {
       const entrypoint = pkg.main || "index.js";
       const main = path.join(installation, entrypoint);
       const filename = `${name}-${pkg.version}`
-      const plugin = path.join(PLUGIN_PATH, `${filename}.js`);
+      const plugin = path.join(RCTPM_PLUGIN_PATH, `${filename}.js`);
 
       shell.cp(main, plugin);
 

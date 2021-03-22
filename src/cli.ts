@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import rctpm, { RCTPM_CONFIG_PATH } from "./";
+import rctpm from "./";
 import yargs from "yargs";
 import { mkdirSync } from "fs";
 import pkg from "../package.json";
@@ -37,7 +37,7 @@ try {
     )
     .command(
       "remove PLUGIN",
-      "Add a new plugin to the manifest",
+      "Remove a plugin from the manifest",
       (yargs) => {
         yargs.positional("name", {
           type: "string",
@@ -65,8 +65,8 @@ try {
       "Initialize RCTPM in your home directory",
       () => {},
       () => {
-        mkdirSync(RCTPM_CONFIG_PATH, { recursive: true });
-        rctpm.exec("yarn init -yps");
+        rctpm.init();
+        logger.info("Initialized config directory.")
       }
     )
     .command(

@@ -1,8 +1,8 @@
 import pino from "pino";
-import { DEBUG } from "./config";
+import { RCTPM_DEBUG } from "./config";
 
 export const logger = pino({
-  level: DEBUG ? 'debug' : 'info',
+  level: RCTPM_DEBUG ? 'debug' : 'info',
   prettyPrint: {
     ignore: 'pid,hostname,time',
   }
