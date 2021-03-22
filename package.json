@@ -1,11 +1,12 @@
 {
   "name": "rctpm",
+  "description": "OpenRCT2 Plugin Manager",
   "version": "0.0.0",
   "main": "index.js",
   "license": "MIT",
   "private": true,
   "bin": {
-    "rctpm": "./dist/cli.js"
+    "rctpm": "./dist/src/cli.js"
   },
   "devDependencies": {
     "@types/node": "^14.14.30",

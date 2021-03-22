@@ -2,14 +2,14 @@
 
 import rctpm from "./";
 import yargs from "yargs";
-import { mkdirSync } from "fs";
 import pkg from "../package.json";
 import { logger } from "./logger";
+import { RCTPM_OPENRCT2_PATH, RCTPM_CONFIG_PATH } from "./config";
 
 try {
   const { argv } = yargs
     .scriptName("rctpm")
-    .usage("The OpenRCT2 Plugin Manager\nUsage: rctpm COMMAND [OPTIONS]")
+    .usage(`${pkg.description}\n\nUsage: ${pkg.name} COMMAND [OPTIONS]`)
     .command(
       ["install", "$0"],
       "Install OpenRCT2 plugins in manifest",
@@ -61,15 +61,6 @@ try {
       }
     )
     .command(
-      "init",
-      "Initialize RCTPM in your home directory",
-      () => {},
-      () => {
-        rctpm.init();
-        logger.info("Initialized config directory.")
-      }
-    )
-    .command(
       "upgrade",
       "Download new plugin versions",
       () => {},
@@ -78,9 +69,9 @@ try {
         logger.info(`Upgraded ${rctpm.count} plugins.`);
       }
     )
-
     .version(pkg.version)
-    .help();
+    .help()
+    .epilogue(`Configuration:\n  $RCTPM_CONFIG_PATH: ${RCTPM_CONFIG_PATH}\n  $RCTPM_OPENRCT2_PATH: ${RCTPM_OPENRCT2_PATH}`)
 
   logger.debug(argv)
 } catch (error) {

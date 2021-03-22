@@ -1,8 +1,8 @@
 import { Manifest } from "./manifest";
-import { RCTPM_CONFIG_PATH } from "./config";
+import { RCTPM_CONFIG_PATH, RCTPM_OPENRCT2_PATH } from "./config";
 
 export * from "./config";
 export * from "./manifest";
 export * from "./types";
 
-export default new Manifest(RCTPM_CONFIG_PATH);
+export default Manifest.parse(RCTPM_CONFIG_PATH, RCTPM_OPENRCT2_PATH);
