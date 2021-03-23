@@ -1,0 +1,14 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typecript-eslint/plugin",
+    "prettier",
+    "json"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:json/recommended-with-comments"
+  ]
+}

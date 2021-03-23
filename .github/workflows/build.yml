@@ -1,0 +1,15 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install
+      - run: yarn release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
