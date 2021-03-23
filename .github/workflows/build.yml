@@ -29,7 +29,6 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
       - name: Build application
         run: yarn build
       - name: Publish to NPM
