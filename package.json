@@ -2,7 +2,7 @@
   "name": "rctpm",
   "description": "OpenRCT2 Plugin Manager",
   "version": "0.0.0-development",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "license": "MIT",
   "bin": {
     "rctpm": "./dist/src/cli.js"
