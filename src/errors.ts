@@ -12,7 +12,9 @@ export class NotFoundError extends Error {
 
 export class PlatformError extends Error {
   constructor() {
-    super("Platform could not be detected. Set $RCTPM_OPENRCT2_PATH to proceed.")
+    super(
+      "Platform could not be detected. Set $RCTPM_OPENRCT2_PATH to proceed."
+    );
   }
 }
 
