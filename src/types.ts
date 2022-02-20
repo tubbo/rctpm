@@ -5,3 +5,7 @@ export type Package = {
 };
 
 export type PackageIterator = (name: string, version: string) => void;
+
+export type PluginCommandArgs = {
+  PLUGIN: string
+};

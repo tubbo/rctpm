@@ -9,7 +9,7 @@ plugins directory. Because it can leverage Yarn's lockfile system,
 `rctpm` can be used to rehydrate a plugins directory from any state,
 enabling fast upgrades and installs.
 
-**`rctpm` takes over your plugin directory and will remove any existing plugins when it installs new ones.**
+**`rctpm` takes over your plugin directory and will remove any existing plugins that it doesn't manage.**
 
 ## Installation
 
@@ -36,7 +36,7 @@ Or, from GitHub:
 
     rctpm add https://github.com/mgovea/openrct2-ride-price-manager
 
-Or, from your local filesystem:
+Or, from your local filesystem: (**NOTE:** All paths must be absolute)
 
     rctpm add ~/my-plugin
 
@@ -87,11 +87,11 @@ configuring the `Manifest` object from the module:
 ```typescript
 import rctpm from "rctpm";
 
-rctpm.base = "path/to/rctpm/config"
-rctpm.artifact = "path/to/openrct2/data"
+rctpm.base = "path/to/rctpm/config";
+rctpm.artifact = "path/to/openrct2/data";
 
-rctpm.install()
+rctpm.install();
 ```
 
-[OpenRCT2]: https://openrct2.org/
-[Yarn]: https://yarnpkg.com/
+[openrct2]: https://openrct2.org/
+[yarn]: https://yarnpkg.com/

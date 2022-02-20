@@ -1,10 +1,10 @@
-#!/usr/bin/env node
-
 import rctpm from "./";
 import yargs from "yargs";
 import pkg from "../package.json";
 import { logger } from "./logger";
 import { RCTPM_OPENRCT2_PATH, RCTPM_CONFIG_PATH } from "./config";
+import { PluginCommandArgs } from "./types";
+import { PluginNameError } from "./errors";
 
 try {
   const { argv } = yargs
@@ -15,38 +15,38 @@ try {
       "Install OpenRCT2 plugins in manifest",
       () => {},
       () => {
-        logger.info("Installing OpenRCT2 plugins...")
+        logger.info("Installing OpenRCT2 plugins...");
         rctpm.install();
-        logger.info(`${rctpm.count} plugins installed.`);
+        logger.success(`${rctpm.count} plugins installed.`);
       }
     )
     .command(
       "add PLUGIN",
       "Add a new plugin to the manifest",
       (yargs) => {
-        yargs.positional("name", {
+        yargs.positional("PLUGIN", {
           type: "string",
           describe: "Name of the plugin",
         });
       },
-      ({ PLUGIN }) => {
-        if (!PLUGIN) throw new Error('You need to specify a plugin name')
-        rctpm.add(PLUGIN as string)
+      ({ PLUGIN }: PluginCommandArgs) => {
+        if (!PLUGIN) throw new PluginNameError();
+        rctpm.add(PLUGIN);
         logger.info(`Installed plugin "${PLUGIN}"`);
-      },
+      }
     )
     .command(
       "remove PLUGIN",
       "Remove a plugin from the manifest",
       (yargs) => {
-        yargs.positional("name", {
+        yargs.positional("PLUGIN", {
           type: "string",
           describe: "Name of the plugin",
         });
       },
-      ({ PLUGIN }) => {
-        if (!PLUGIN) throw new Error('You need to specify a plugin name')
-        rctpm.remove(PLUGIN as string);
+      ({ PLUGIN }: PluginCommandArgs) => {
+        if (!PLUGIN) throw new PluginNameError();
+        rctpm.remove(PLUGIN);
         logger.info(`Removed plugin "${PLUGIN}"`);
       }
     )
@@ -55,9 +55,11 @@ try {
       "List all plugins in the manifest",
       () => {},
       () => {
-        logger.info("List Installed Plugins:")
-        rctpm.forEach((name, version) => logger.info(`${name} (${version})`))
-        logger.info(`${rctpm.count} Plugins Installed.`)
+        logger.info("Installed OpenRCT2 Plugins:\n");
+        rctpm.forEach((name, version) =>
+          logger.info(`  * ${name} (${version})`)
+        );
+        logger.info(`\n${rctpm.count} Plugins Installed.`);
       }
     )
     .command(
@@ -69,12 +71,27 @@ try {
         logger.info(`Upgraded ${rctpm.count} plugins.`);
       }
     )
+    .command(
+      "outdated",
+      "List all outdated plugins",
+      () => {},
+      () => {
+        const { stdout } = rctpm.exec("yarn outdated");
+        const packages = stdout.split("\n").slice(4).join("\n");
+
+        logger.info("Outdated Plugins:");
+        logger.info(packages);
+      }
+    )
+
     .version(pkg.version)
     .help()
-    .epilogue(`Configuration:\n  $RCTPM_CONFIG_PATH: ${RCTPM_CONFIG_PATH}\n  $RCTPM_OPENRCT2_PATH: ${RCTPM_OPENRCT2_PATH}`)
+    .epilogue(
+      `Configuration:\n  $RCTPM_CONFIG_PATH: ${RCTPM_CONFIG_PATH}\n  $RCTPM_OPENRCT2_PATH: ${RCTPM_OPENRCT2_PATH}`
+    );
 
-  logger.debug(argv)
+  logger.debug(argv);
 } catch (error) {
-  logger.error(error.message)
-  if (logger.level === 'debug') console.error(error)
+  logger.error(error);
+  process.exit(1);
 }

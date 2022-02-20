@@ -29,11 +29,11 @@ export class Manifest {
         private: true,
         dependencies: {},
       };
-      const filename = path.join(this.base, 'package.json');
+      const filename = path.join(this.base, "package.json");
       const source = JSON.stringify(pkg, null, 2);
 
-      shell.mkdir('-p', this.base);
-      writeFileSync(filename, source, 'utf-8')
+      shell.mkdir("-p", this.base);
+      writeFileSync(filename, source, "utf-8");
     }
   }
 
@@ -41,18 +41,18 @@ export class Manifest {
    * Instantiate a new `Manifest`.
    */
   static parse(base: string, artifact: string) {
-    const manifest = new Manifest(base, artifact)
+    const manifest = new Manifest(base, artifact);
 
-    manifest.initialize()
+    manifest.initialize();
 
-    return manifest
+    return manifest;
   }
 
   /**
    * Execute a command within the rctpm config directory.
    */
   exec(command: string) {
-    if (!existsSync(this.base)) throw new NotInitializedError(this.base)
+    if (!existsSync(this.base)) throw new NotInitializedError(this.base);
 
     logger.debug(`running "${command}"`);
 
@@ -63,12 +63,10 @@ export class Manifest {
    * Package configuration for this user's plugins.
    */
   get config(): Package {
-    const source = readFileSync(
-      path.join(this.base, "package.json"),
-      "utf-8"
-    )
+    const filepath = path.join(this.base, "package.json");
+    const source = readFileSync(filepath, "utf-8");
 
-    return JSON.parse(source)
+    return JSON.parse(source);
   }
 
   /**
@@ -132,23 +130,23 @@ export class Manifest {
    */
   private build() {
     logger.debug("rehydrating plugin dir");
-    shell.rm('-rf', this.artifact)
-    shell.mkdir('-p', this.artifact)
+    shell.rm("-rf", this.artifact);
+    shell.mkdir("-p", this.artifact);
 
     this.forEach((name: string) => {
-      const installation = path.join(this.base, "node_modules", name)
+      const installation = path.join(this.base, "node_modules", name);
       const pkg = JSON.parse(
         readFileSync(path.join(installation, "package.json"), "utf-8")
       );
       const entrypoint = pkg.main || "index.js";
       const main = path.join(installation, entrypoint);
-      const filename = `${name}-${pkg.version}`
+      const filename = `${name}-${pkg.version}`;
       const plugin = path.join(this.artifact, `${filename}.js`);
 
       logger.debug(`building ${name}`);
       shell.cp(main, plugin);
 
-      if (!existsSync(plugin)) throw new NotFoundError(name, entrypoint)
+      if (!existsSync(plugin)) throw new NotFoundError(name, entrypoint);
     });
   }
 }
