@@ -11,6 +11,7 @@
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
     "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^10.0.1",
     "@types/chalk": "^2.2.0",
     "@types/node": "^14.14.30",
     "@types/pino": "^6.3.6",
